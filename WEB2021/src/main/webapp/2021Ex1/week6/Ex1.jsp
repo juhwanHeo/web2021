@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<%int i = 30;%>
+	<%int i = 24;%>
 	<%
 		out.println("하루는 " + i + "시간이며, <br>");
 		out.println("하루는 " + i * 60 + "분입니다.");
