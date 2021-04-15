@@ -1,0 +1,48 @@
+@charset "UTF-8";
+ * {
+    margin: 0;
+    padding: 10px;
+}
+
+.nav {
+    background-color:rgb(57, 63, 69);
+}
+.link {
+    text-align: center;
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+    margin-left: 30px;
+    padding: 20px;
+    
+}
+
+h1 {
+	padding: 60px;
+    margin: 0 auto;
+    background-color: rgb(235, 238, 241);
+    font-size: 60px;
+    text-align: center;
+}
+
+h3 {
+	padding: 30px;
+	padding-top: 40px;
+	padding-bottom: 15px;
+	width:100%;
+    margin: 0 auto;
+    text-align: center;
+}
+.line {
+}
+
+.footer {
+	border-top: 1px solid gray;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.footer p {
+	margin: 0;
+	padding: 0;
+}
