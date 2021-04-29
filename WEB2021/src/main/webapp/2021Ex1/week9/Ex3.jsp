@@ -1,23 +1,18 @@
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Ex3.jsp</title>
-</head>
-<body>
 
-	<% 
-		request.setCharacterEncoding("euc-kr"); 
-	%>
-	이 페이지는 5초마다 새로고침 됩니다. <br><br> 
+<%
+	request.setCharacterEncoding("euc-kr");
+	out.println("첫번째 화면 입니다. <br><hr>");
 	
-	<%
-		response.setHeader("Refresh","5;URL=Ex3.jsp");
-		out.println(new Date());
- 	%>
+%>
 
-</body>
-</html>
+<jsp:include page="Ex3paramto.jsp" flush="true">
+	<jsp:param name="ko" value="한국"/>
+	<jsp:param name="am" value="미국"/>
+</jsp:include>
+	
+<%
+	out.println("<hr> 마지막 화면입니다. <br>");
+	
+%>
