@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>문제 1 </title>
+</head>
+<body>
+<h3> 학생 정보 입력 </h3>
+<form method="post" action="Ex2from.jsp"> 
+	<table>
+		<tr> 
+			<td>성명:</td>
+			<td><input type="text" name="name"></td>
+		</tr>
+		
+		<tr> 
+			<td>학번:</td>
+			<td><input type="text" name="id"></td>
+		</tr>
+		
+		<tr> 
+			<td>성별:</td>
+			<td><input type="radio" name="sex" value="남자">남자 <input type="radio" name="sex" value="여자">여자</td>
+		</tr>
+		
+		<tr> 
+			<td>국적:</td>
+			<td>
+				<select name="country"> 
+					<option value="대한민국">대한민국</option>
+					<option value="일본">일본</option>
+					<option value="중국">중국</option>
+					<option value="터키">터키</option>
+					<option value="태국">태국</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<input type="submit" value="보내기">
+</form>
+
+</body>
+</html>
