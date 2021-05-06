@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Ex4.jsp</title>
+<title>Ex1reqto.jsp</title>
 </head>
 <body>
 
@@ -18,9 +18,9 @@
 		String country = request.getParameter("country");
 	%>
 	<h3> 학생 정보 입력 결과 </h3>
-	성명 : <%= name %> <br>
-	학번 : <%= id %> <br>
-	성별 : <%= sex %> <br>
+	성명 : <%= name %> <br><br>
+	학번 : <%= id %> <br><br>
+	성별 : <%= sex %> <br><br>
 	국적 : <%= country %> <br>
 </body>
 </html>
