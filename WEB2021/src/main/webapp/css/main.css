@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+/* html, body {
+	width:100%; height:100%;
+}
+ */
+.container {
+	margin-top: 50px;
+	margin-left: 50px;
+	
+}
+#map {
+	position: fixed;
+	top: 50px;
+	left: 50px;
+    min-width: 900px;
+    height: calc(100% - 50px);
+    height: -webkit-calc(100% - 50px);
+    height: -moz-calc(100% - 50px);
+    
+    width: calc(100% - 50px);
+    width: -webkit-calc(100% - 50px);
+    width: -moz-calc(100% - 50px);
+}
+
+.top-bar {
+	background: red;
+	position: fixed; 
+	left: 50px; top: 0; right: 0;
+	height: 50px;
+	
+}
+
+.left-bar {
+	background: #3b4248;
+	position: fixed;
+	left: 0; top: 0; bottom: 0;
+	width: 50px;
+	
+}
+
+ .navi {
+	display: flex;
+	padding: 10px;
+	list-style: none;
+	background-color: #cec7b6;
+	height: 60px;
+}
+
+.navi li {
+	display: block;
+	padding: 20px;
+	width: 25%;
+	color: white;
+	float: left;
+	text-align: center;
+}
+
+.navi li:hover {
+	color: #979067;
+	cursor: pointer;
+}
