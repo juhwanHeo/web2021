@@ -5,11 +5,29 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
+	<!-- http://localhost:8080/WEB2021/2021Ex1/project/jsp/main.css -->
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css">
 </head>
 <body>
-	<!-- 51514afad23b808dd3f78f3965d57b28 -->
-	<div id="map" style="width:500px; height:400px;"></div>
+	<div class="top-bar">
+	</div>
+	<div class="left-bar">
+	</div>
 	
+	<!-- 
+	<ul class="navi">
+        <li>menu01</li>
+        <li>menu02</li>
+        <li>menu03</li>
+        <li>menu04</li>
+    </ul>
+	 -->
+	 <div class="container">
+		<!-- 51514afad23b808dd3f78f3965d57b28 -->
+		<div id="map">
+		</div>
+	
+	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28&libraries=services"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28&libraries=LIBRARY"></script>

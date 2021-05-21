@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+.container {
+	margin-top: 50px;
+	margin-left: 50pxl
+	
+}
+
+.top-bar {
+	background: red;
+	position: fixied; 
+	left: 0; top: 0; right: 0;
+	height: 50px;
+	
+}
+
+.left-bar {
+	background: blue;
+	position: fixied;
+	left: 0; top: 50; right: 0;
+	width: 50px;
+	
+}
+
+ .navi  {
+	display: flex;
+	padding: 10px;
+	list-style: none;
+	background-color: #cec7b6;
+	height: 60px;
+}
+
+.navi li {
+	display: block;
+	padding: 20px;
+	width: 25%;
+	color: white;
+	float: left;
+	text-align: center;
+}
+
+.navi li:hover {
+	color: #979067;
+	cursor: pointer;
+}
