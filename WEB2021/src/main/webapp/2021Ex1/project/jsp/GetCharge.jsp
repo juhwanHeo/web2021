@@ -1,11 +1,18 @@
+
+<%@page import="org.json.simple.JSONArray"%>
+<%@page import="org.json.simple.JSONObject"%>
+<%@page import="com.google.gson.JsonElement"%>
+<%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.project.vo.StationVO"%>
+<%@ page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-    
-<%@ page import="java.sql.*" %>
+	pageEncoding="utf-8"%>
 <%
 	Connection conn = null;
 	
@@ -15,20 +22,29 @@
 	
 	Class.forName("com.mysql.jdbc.Driver");
 	conn = DriverManager.getConnection(url, user, password);
-
 %>
 <%
-		//String search = request.getParameter("search");
-		String search = "춘천시";
+		request.setCharacterEncoding("UTF-8");
+		String search = request.getParameter("search");
+		
+		System.out.println("search: " + search);
+		if(search == null) search = "춘천시";
 		ResultSet rs = null;
 		Statement stmt = null;
 		List<StationVO> stationList = null;
 		StationVO stationVO = null;
 		try {
-			String sql = "SELECT * FROM station WHERE address LIKE '%" + search + "%'" ;
+			String sql = "SELECT * FROM station WHERE address LIKE '%" + search + "%'" 
+						+ "OR charge_name LIKE '%" + search + "%'" 
+						+ "OR cido LIKE '%" + search + "%'" 
+						+ "OR road_address LIKE '%" + search + "%'"
+						+ "OR num_address LIKE '%" + search + "%'" ;
+			
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			stationList = new ArrayList<>();
+			JSONArray jsonArray = new JSONArray();
+			JSONObject jsonObj = new JSONObject();
 			
 			while (rs.next()) {
 				stationVO = new StationVO();
@@ -53,18 +69,9 @@
 				stationVO.setData_dt(rs.getDate("data_dt"));
 				stationList.add(stationVO);
 			}
-			
-			
-			//JSONArray jsonArray = new JSONArray();
-			/* 
-			for(StationVO vo : stationList) {
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("charge_name", vo.getCharge_name());
-			} 
-			*/
-
 			String json = new Gson().toJson(stationList);
-			out.print(json); 
+			System.out.println("size: " + stationList.size());
+			out.println(json);  
 			
 		}
 		catch (SQLException e) {

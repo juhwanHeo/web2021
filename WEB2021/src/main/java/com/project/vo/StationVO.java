@@ -175,4 +175,15 @@ public class StationVO {
 		this.data_dt = data_dt;
 	}
 
+	@Override
+	public String toString() {
+		return "StationVO [charge_name=" + charge_name + ", address=" + address + ", cido=" + cido + ", close_dt="
+				+ close_dt + ", available_st_time=" + available_st_time + ", available_ed_time=" + available_ed_time
+				+ ", slow_charge_yn=" + slow_charge_yn + ", quick_charge_yn=" + quick_charge_yn + ", quick_charge_type="
+				+ quick_charge_type + ", slow_charhe_cnt=" + slow_charhe_cnt + ", quick_charge_cnt=" + quick_charge_cnt
+				+ ", parking_fee_yn=" + parking_fee_yn + ", road_address=" + road_address + ", num_address="
+				+ num_address + ", manage_com=" + manage_com + ", tel=" + tel + ", latitude=" + latitude
+				+ ", longitude=" + longitude + ", data_dt=" + data_dt + "]";
+	}
+
 }
