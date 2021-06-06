@@ -86,6 +86,7 @@ a {
 }
 
 .icon {
+	outline: none;
 	border-radius: 45px;
 	margin-left: -66px;
 	border: none;
