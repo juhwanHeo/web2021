@@ -10,16 +10,20 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+	<% request.setCharacterEncoding("UTF-8"); %>
+	<!-- loading https://icons8.com/preloaders/ -->
+	<div class="wrap-loading display-none"><img src="${pageContext.request.contextPath}/img/loading3.gif" /></div> 
 	<div class="top-bar">
 		<div class="login-box">
 			<a href="#">로그인</a>
 		</div>
 		<div class="search-box">
 			<input type="text" name="search" id="search" placeholder="search...">
-			<button class="icon" onclick="getCharge()"><i class="fa fa-search"></i></button>
+			<button class="icon" onclick="getCharge(null)"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
 	<div class="left-bar">
+		<div class="item"><a href="index.jsp" style="margin-left: 5px;"><i class="fa fa-home fa-2x"></i></a></div>
 	</div>
 	
 	<!-- 
@@ -30,7 +34,7 @@
 	        <li>menu04</li>
 	    </ul>
 	 -->
-	 <div class="container">
+	<div class="container">
 		<div id="map">
 		</div>
 	</div>
@@ -43,50 +47,78 @@
 			참고 
 			https://apis.map.kakao.com/web/sample/geolocationMarker/
 		*/
+		var addr = '<%= request.getParameter("addr") %>'
+		if(addr) getCharge(addr);
+		
 		var positions = [];
 		var markers = [];
 		var options = {
 				center: new kakao.maps.LatLng(37.8537615, 127.6870611),
-				level: 14
+				level: 5 // 1 ~ 14
 			};
 		var container = document.getElementById('map');
 		var map = new kakao.maps.Map(container, options);
 		
-		var res;
-		function getCharge() {
-			var search = $("#search").val();
-        	console.log("search: " + search);
+		function getCharge(address) {
+			var search;
+			if(address) search = address;
+			else search = $("#search").val();
+			if(search === 'all') search = '';
+			
+			console.log('search: ' + search);
 			$.ajax({
-	            type : "GET", //전송방식을 지정한다 (POST,GET)
+	            type : "GET",
 				data : { search },
-	            url : "GetCharge.jsp", //호출 URL을 설정한다. GET방식일경우 뒤에 파라티터를 붙여서 사용해도된다.
-	            dataType : "json",//호출한 페이지의 형식이다. xml,json,html,text등의 여러 방식을 사용할 수 있다.
+	            url : "api/GetCharge.jsp",
+	            dataType : "json",
 	            success : function(data){
 		        	console.log("positions.length: " + positions.length); 
 					if(positions.length != 0) 
 	            		removeMarker();
-					
-	                $.each(data, function(i, item) {
+					$.each(data, function(i, item) {
 	                	//console.log(i + ": " + JSON.stringify(item));
 	                	positions.push({
 	                		content: '<div>' + item.charge_name + '</div>',
 	                		latlng: new kakao.maps.LatLng(item.latitude, item.longitude)
 	                	});
 					});
-					
 	            },
+				beforeSend : function() {
+					var width = 0;
+					var height = 0;
+					var left = 0;
+					var top = 0;
+					width = 256;
+					height = 256;
+					top = ($(window).height() - width) / 2
+							+ $(window).scrollTop();
+					left = ($(window).width() - height) / 2
+							+ $(window).scrollLeft();
+					if ($(".wrap-loading").length != 0) {
+						$(".wrap-loading").css({
+							"top" : top + "px",
+							"left" : left + "px"
+						});
+						$('.wrap-loading').removeClass('display-none');
+					}
+				},
 	            complete : function() {
-	            	if(positions.length != 0) {
-		            	setCenter(positions[0].latlng);
-	                	addMarker();
-	            	}
-	            	else {
-	            		alert("검색 결과 없음");
-	            	}
+            	 	setTimeout(function() {
+            	 		if(positions.length != 0) {
+			            	setCenter(positions[0].latlng);
+		                	addMarker();
+		            	}
+		            	else {
+		            		alert("검색 결과 없음");
+		            	}
+						$('.wrap-loading').addClass('display-none');
+					}, 1000);
+	            	
 	            	
 				},
 	            error : function(){
 	                alert("통신실패!!!!");
+					$('.wrap-loading').addClass('display-none');
 	            }
 	             
 	        });
