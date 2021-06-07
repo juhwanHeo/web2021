@@ -1,8 +1,8 @@
 @charset "UTF-8";
-
 * {
 	margin: 0;
 	padding: 0;	
+	box-sizing: border-box;
 }
 
 a {
@@ -11,13 +11,116 @@ a {
 	color: white;
 }
 
-/* html, body {
-	width:100%; height:100%;
+.wrap-loading { /*화면 전체를 어둡게 합니다.*/
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	/* background: rgba(0, 0, 0, 0.2); */ /*not in ie */
 }
- */
+.wrap-loading { /*로딩 이미지*/
+	z-index: 9999 !important;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+.display-none { /*감추기*/
+	display: none;
+}
+
+
+.header {
+	background: #3746AF;
+	height: 50px;
+	width: 100%;
+}
+#index {
+	background: #D2DBDD;
+}
+
 .container {
 	margin-top: 50px;
 	margin-left: 50px;
+}
+
+.main-container {
+	background: #D2DBDD;
+}
+
+.main-container .card-container {
+	margin: 0 auto;
+	width: 960px;
+}
+.main-container .card-container .card {
+	display: flex;
+	flex-direction: column;
+	max-width: 20.75em;
+	min-height: 15.75em;
+	overflow: hidden;
+	border-radius: .5em;
+	text-decoration: none;
+	background: white;
+	margin: 1em;
+	padding: 2.75em 2.5em;
+	box-shadow: 0 1.5em 2.5em -.5em rgba(#000000, .1);
+	transition: transform .45s ease, background .45s ease;
+}
+.main-container .card-container .cards {
+	width: 100%;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: center;
+	-webkit-justify-content: center;
+}
+
+.main-container .card-container .card-img {
+	visibility: hidden;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 235px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+}
+
+.main-container .card-container .card {
+	margin-right: 25px;
+	transition: all .4s cubic-bezier(0.175, 0.885, 0, 1);
+	background-color: #fff;
+	width: 33.3%; 
+	height: 20px;
+	position: relative;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+}
+
+.main-container .card-container .card:hover {
+	box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
+	transform: scale(1.07, 1.07);
+}
+
+.main-container .card-container .card-info {
+	z-index: 2;
+	background-color: #fff;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	padding: 16px 24px 24px 24px;
+}
+
+.main-container .card-container .card-category {
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 2px;
+	font-weight: 500;
+	color: #868686;
+}
+
+.main-container .card-container .card-title {
+	margin-top: 5px;
+	margin-bottom: 10px;
 }
 
 #map {
