@@ -25,8 +25,11 @@
 <%
 		request.setCharacterEncoding("UTF-8");
 		String search = request.getParameter("search");
+		String[] type = request.getParameterValues("type[]");
 		
 		System.out.println("search: " + search);
+		System.out.println("type: " + type);
+		
 		if(search == null) search = "춘천시";
 		ResultSet rs = null;
 		Statement stmt = null;
@@ -38,7 +41,19 @@
 						+ "OR cido LIKE '%" + search + "%'" 
 						+ "OR road_address LIKE '%" + search + "%'"
 						+ "OR num_address LIKE '%" + search + "%'" ;
-			
+			if(type != null && ! type[0].equals("cb_all")){
+				sql = "SELECT aa.* from ( SELECT * FROM station WHERE address LIKE '%" + search + "%'" 
+						+ "OR charge_name LIKE '%" + search + "%'" 
+						+ "OR cido LIKE '%" + search + "%'" 
+						+ "OR road_address LIKE '%" + search + "%'"
+						+ "OR num_address LIKE '%" + search + "%') aa WHERE " 
+						+ "aa.quick_charge_type LIKE '%" + type[0] + "%'";
+				
+				for(int i = 1; i<type.length; i++) {
+					sql += " OR aa.quick_charge_type LIKE '%" + type[i] + "%'";
+				}
+				System.out.println("sql: " + sql);
+			}
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			stationList = new ArrayList<>();

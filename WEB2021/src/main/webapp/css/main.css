@@ -126,7 +126,7 @@ a {
 #map {
 	position: fixed;
 	top: 50px;
-	left: 50px;
+	left: 80px;
 	min-width: 900px;
 	height: calc(100% - 50px);
 	height: -webkit-calc(100% - 50px);
@@ -139,7 +139,7 @@ a {
 .top-bar {
 	background: #3746AF;
 	position: fixed;
-	left: 50px;
+	left: 80px;
 	top: 0;
 	right: 0;
 	height: 50px;
@@ -152,7 +152,22 @@ a {
 	left: 0;
 	top: 0;
 	bottom: 0;
-	width: 50px;
+	width: 80px;
+}
+.left-bar .item {
+	border-bottom: 1px solid white;
+	margin-bottom: 5px;
+	margin-top: 8px;
+}
+
+.left-bar .item .title {
+	font-size: 15px;
+	color: white;
+}
+.left-bar .item .type {
+	font-size: 10px;
+	color: white;
+	padding: 3px;
 }
 
 .search-box {
@@ -164,14 +179,20 @@ a {
 }
 
 .login-box {
-	margin-right: 50px;
+	margin-right: 100px;
     float: right;
-    width: 100px;
+    width: 135x; 
     height: 50px;
     justify-content: flex-end;
     align-items: center;
     text-align: center;
 }
+
+.login-box * {
+	color: white;
+	font-size: 13px;
+}
+
 
 #search {
 	width: 300px;
