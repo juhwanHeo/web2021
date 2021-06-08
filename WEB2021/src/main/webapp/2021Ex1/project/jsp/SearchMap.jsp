@@ -1,3 +1,4 @@
+<%@page import="com.project.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -11,29 +12,45 @@
 </head>
 <body>
 	<% request.setCharacterEncoding("UTF-8"); %>
+	<jsp:useBean id="user" class="com.project.vo.UserVO" scope="page"/>
 	<!-- loading https://icons8.com/preloaders/ -->
 	<div class="wrap-loading display-none"><img src="${pageContext.request.contextPath}/img/loading3.gif" /></div> 
 	<div class="top-bar">
 		<div class="login-box">
-			<a href="#">로그인</a>
+			<%
+				UserVO userVO = (UserVO) session.getAttribute("userVO");
+				if(userVO == null) {
+			%>
+				<a href="#">로그인</a>
+			<% } else { %>
+				<jsp:setProperty name="user" property="name"  value="<%= userVO.getName() %>"/>
+				<span><jsp:getProperty name="user" property="name" />님 환영합니다!!</span> <br>
+				<a href="#">관리자 페이지</a>
+			<% } %>
 		</div>
 		<div class="search-box">
-			<input type="text" name="search" id="search" placeholder="search...">
+			<input type="text" name="search" id="search" placeholder="search..." value="<%= request.getParameter("addr") %>">
 			<button class="icon" onclick="getCharge(null)"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
+	
 	<div class="left-bar">
 		<div class="item"><a href="index.jsp" style="margin-left: 5px;"><i class="fa fa-home fa-2x"></i></a></div>
+		<div class="item">
+			<div class="title">
+				충전타입
+			</div>
+			<div class="type">
+				<input type="checkbox" name="cb_all" checked> 전체  <br>
+				<input type="checkbox" name="cb_ac3_sang"> AC3상  <br>
+				<input type="checkbox" name="cb_ac_wan"> AC완속  <br>
+				<input type="checkbox" name="cb_dc_demo"> DC차데모 <br>
+				<input type="checkbox" name="cb_dc_combo"> DC콤보  <br>
+				<input type="checkbox" name="cb_triple"> 트리플형 <br>
+			</div>
+		</div>
 	</div>
 	
-	<!-- 
-		<ul class="navi">
-	        <li>menu01</li>
-	        <li>menu02</li>
-	        <li>menu03</li>
-	        <li>menu04</li>
-	    </ul>
-	 -->
 	<div class="container">
 		<div id="map">
 		</div>
@@ -47,6 +64,83 @@
 			참고 
 			https://apis.map.kakao.com/web/sample/geolocationMarker/
 		*/
+		
+		$("input[name='cb_all']").click(function() {
+			if($(this).is(":checked")) {
+				$('input:checkbox[name="cb_ac3_sang"]').prop("checked", false);
+				$('input:checkbox[name="cb_ac_wan"]').prop("checked", false);
+				$('input:checkbox[name="cb_dc_demo"]').prop("checked", false);
+				$('input:checkbox[name="cb_dc_combo"]').prop("checked", false);
+				$('input:checkbox[name="cb_triple"]').prop("checked", false);
+				checkdBox();
+			}
+		})
+		
+		$('input[name="cb_ac3_sang"]').click(function() {
+			if($(this).is(":checked")) {
+				$("input[name='cb_all']").prop("checked", false);
+			}
+			checkdBox();
+		})
+		
+		$('input[name="cb_ac_wan"]').click(function() {
+			if($(this).is(":checked")) {
+				$("input[name='cb_all']").prop("checked", false);
+			}
+			checkdBox();
+		})
+		
+		$('input[name="cb_dc_demo"]').click(function() {
+			if($(this).is(":checked")) {
+				$("input[name='cb_all']").prop("checked", false);
+			}
+			checkdBox();
+		})
+		
+		$('input[name="cb_dc_combo"]').click(function() {
+			if($(this).is(":checked")) {
+				$("input[name='cb_all']").prop("checked", false);
+			}
+			checkdBox();
+		})
+		$('input[name="cb_triple"]').click(function() {
+			if($(this).is(":checked")) {
+				$("input[name='cb_all']").prop("checked", false);
+			}
+			checkdBox();
+		})
+		
+		function checkdBox() {
+			var type = []
+			if($('input[name="cb_all"]').is(":checked")) {
+				var search = $("#search").val();
+				getCharge(search, 'cb_all');
+				return null;
+			}
+			
+			if($('input[name="cb_ac3_sang"]').is(":checked")) {
+				type.push('AC3상')
+			}
+			if($('input[name="cb_ac_wan"]').is(":checked")) {
+				type.push('AC완속')
+				
+			}
+			if($('input[name="cb_dc_demo"]').is(":checked")) {
+				type.push('DC차데모')
+				
+			}
+			if($('input[name="cb_dc_combo"]').is(":checked")) {
+				type.push('DC콤보')
+				
+			}
+			if($('input[name="cb_triple"]').is(":checked")) {
+				type.push('트리플형')
+			}
+
+			var search = $("#search").val();
+			getCharge(search, type);
+		}
+		
 		var addr = '<%= request.getParameter("addr") %>'
 		if(addr) getCharge(addr);
 		
@@ -59,16 +153,25 @@
 		var container = document.getElementById('map');
 		var map = new kakao.maps.Map(container, options);
 		
-		function getCharge(address) {
+		function getCharge(address, type) {
 			var search;
 			if(address) search = address;
-			else search = $("#search").val();
+			else {
+				search = $("#search").val();
+				$('input:checkbox[name="cb_all"]').prop("checked", true);
+				$('input:checkbox[name="cb_ac3_sang"]').prop("checked", false);
+				$('input:checkbox[name="cb_ac_wan"]').prop("checked", false);
+				$('input:checkbox[name="cb_dc_demo"]').prop("checked", false);
+				$('input:checkbox[name="cb_dc_combo"]').prop("checked", false);
+				$('input:checkbox[name="cb_triple"]').prop("checked", false);
+			}
 			if(search === 'all') search = '';
-			
+
 			console.log('search: ' + search);
+			console.log('type: ' + type);
 			$.ajax({
 	            type : "GET",
-				data : { search },
+				data : { search, type },
 	            url : "api/GetCharge.jsp",
 	            dataType : "json",
 	            success : function(data){
