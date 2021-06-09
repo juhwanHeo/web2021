@@ -6,7 +6,6 @@
 }
 
 a {
-	font-size: 20px;
 	text-decoration:none;
 	color: white;
 }
@@ -157,7 +156,7 @@ a {
 .left-bar .item {
 	border-bottom: 1px solid white;
 	margin-bottom: 5px;
-	margin-top: 8px;
+	margin-top: 2px; 
 }
 
 .left-bar .item .title {
@@ -174,11 +173,11 @@ a {
 	display: block;
 	overflow: hidden;
 	margin: 0 auto;
-	width: 320px;
+	width: 530px;
 	white-space: nowrap;
 }
 
-.login-box {
+.top-bar .login-box {
 	margin-right: 100px;
     float: right;
     width: 135x; 
@@ -188,14 +187,54 @@ a {
     text-align: center;
 }
 
-.login-box * {
+.top-bar .login-box * {
 	color: white;
 	font-size: 13px;
 }
 
 
-#search {
-	width: 300px;
+.header .login-box .login {
+	margin-right: -20px;
+	color: white;
+	font-size: 13px;
+    width: 220px;
+}
+
+.header .login-box .no-login {
+	color: white;
+	font-size: 20px;
+    width: 60px; 
+}
+
+.header .login-box {
+    float: right;
+    height: 50px;
+    width: 220px;
+    justify-content: flex-end; 
+    align-items: center;
+    text-align: center;
+    
+}
+
+.header #search {
+    margin-left: 205px;
+	width: 320px;
+	height: 48px;
+	background: #2b303b;
+	border: none;
+	font-size: 10pt;
+	float: left;
+	color: #fff;
+	outline: none;
+	padding-left: 15px;
+	-webkit-border-radius: 45px;
+	-moz-border-radius: 45px;
+	border-radius: 45px;
+}
+
+.top-bar #search {
+    margin-left: 80px;
+	width: 320px;
 	height: 48px;
 	background: #2b303b;
 	border: none;

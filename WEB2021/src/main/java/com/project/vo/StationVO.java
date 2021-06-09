@@ -12,7 +12,7 @@ public class StationVO {
 	private String slow_charge_yn;
 	private String quick_charge_yn;
 	private String quick_charge_type;
-	private int slow_charhe_cnt;
+	private int slow_charge_cnt;
 	private int quick_charge_cnt;
 	private String parking_fee_yn;
 	private String road_address;
@@ -95,12 +95,12 @@ public class StationVO {
 		this.quick_charge_type = quick_charge_type;
 	}
 
-	public int getSlow_charhe_cnt() {
-		return slow_charhe_cnt;
+	public int getSlow_charge_cnt() {
+		return slow_charge_cnt;
 	}
 
-	public void setSlow_charhe_cnt(int slow_charhe_cnt) {
-		this.slow_charhe_cnt = slow_charhe_cnt;
+	public void setSlow_charge_cnt(int slow_charhe_cnt) {
+		this.slow_charge_cnt = slow_charhe_cnt;
 	}
 
 	public int getQuick_charge_cnt() {
@@ -180,7 +180,7 @@ public class StationVO {
 		return "StationVO [charge_name=" + charge_name + ", address=" + address + ", cido=" + cido + ", close_dt="
 				+ close_dt + ", available_st_time=" + available_st_time + ", available_ed_time=" + available_ed_time
 				+ ", slow_charge_yn=" + slow_charge_yn + ", quick_charge_yn=" + quick_charge_yn + ", quick_charge_type="
-				+ quick_charge_type + ", slow_charhe_cnt=" + slow_charhe_cnt + ", quick_charge_cnt=" + quick_charge_cnt
+				+ quick_charge_type + ", slow_charge_cnt=" + slow_charge_cnt + ", quick_charge_cnt=" + quick_charge_cnt
 				+ ", parking_fee_yn=" + parking_fee_yn + ", road_address=" + road_address + ", num_address="
 				+ num_address + ", manage_com=" + manage_com + ", tel=" + tel + ", latitude=" + latitude
 				+ ", longitude=" + longitude + ", data_dt=" + data_dt + "]";

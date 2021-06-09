@@ -8,6 +8,7 @@
 <title>전기차 충전소</title>
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/info-window.css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
@@ -21,11 +22,12 @@
 				UserVO userVO = (UserVO) session.getAttribute("userVO");
 				if(userVO == null) {
 			%>
-				<a href="#">로그인</a>
+				<a href="Login.jsp" style="font-size: 20px;">로그인</a>
 			<% } else { %>
 				<jsp:setProperty name="user" property="name"  value="<%= userVO.getName() %>"/>
 				<span><jsp:getProperty name="user" property="name" />님 환영합니다!!</span> <br>
-				<a href="#">관리자 페이지</a>
+				<a href="#" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
+				<a href="api/LogoutAction.jsp">로그아웃</a>
 			<% } %>
 		</div>
 		<div class="search-box">
@@ -35,7 +37,7 @@
 	</div>
 	
 	<div class="left-bar">
-		<div class="item"><a href="index.jsp" style="margin-left: 5px;"><i class="fa fa-home fa-2x"></i></a></div>
+		<div class="item"><a href="index.jsp" style="margin-left: 15px;"><i class="fa fa-home fa-3x"></i></a></div>
 		<div class="item">
 			<div class="title">
 				충전타입
@@ -180,8 +182,38 @@
 	            		removeMarker();
 					$.each(data, function(i, item) {
 	                	//console.log(i + ": " + JSON.stringify(item));
+	                	var addr = !!item.road_address ? item.road_address : item.num_address;
+	                	var available_time = item.available_st_time + ' ~ ' + item.available_ed_time;
+	                	var slow_charge_cnt = item.slow_charge_cnt ;
+	                	var quick_charge_cnt = item.quick_charge_cnt;
+	                	var charge_type = !!item.quick_charge_type ? item.quick_charge_type.replaceAll('+', ',') : "정보 없음";
+	                	var tel = !!item.tel ? item.tel : "정보 없음";
+	                	var parking_fee_yn = item.parking_fee_yn === 'Y' ?  ' O ': ' X ';
+	                	var content = '<div class="wrap">' + 
+						            '    <div class="info">' + 
+						            '        <div class="title">' + 
+						            				item.charge_name+ 
+						            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+						            '        </div>' + 
+						            '        <div class="body">' + 
+						            '            <div class="img">' + 
+						            '                <img src="${pageContext.request.contextPath}/img/eco-friendly.png" width="101" height="100">' +
+						            '           </div>' + 
+						            '            <div class="desc">' + 
+						            '                <div class="ellipsis"> <i class="fa fa-map-marker"></i> ' + addr + ' </div>' + 
+						            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 완속 충전기 수 : ' + slow_charge_cnt +' </div>' +  
+						            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 고속 충전기 수 : ' + quick_charge_cnt +' </div>' +
+						            '                <div class="jibun ellipsis"> <i class="fa fa-bolt"></i> 충전기 타입 : ' + charge_type + '</div>' +  
+						            '                <div class="jibun ellipsis"> <i class="fa fa-clock-o"></i> : ' + available_time + '</div>' +  
+						            '                <div class="jibun ellipsis"> <i class="fa fa fa-phone"></i> : ' + tel + '</div>' + 
+						            '                <div class="jibun ellipsis"> <i class="fa fa-credit-card"></i> 주차비 : ' + parking_fee_yn + '</div>' +
+						            '            </div>' + 
+						            '        </div>' + 
+						            '    </div>' +    
+						            '</div>';
 	                	positions.push({
-	                		content: '<div>' + item.charge_name + '</div>',
+	                		text: item.charge_name,
+	                		content: content,
 	                		latlng: new kakao.maps.LatLng(item.latitude, item.longitude)
 	                	});
 					});
@@ -217,7 +249,6 @@
 						$('.wrap-loading').addClass('display-none');
 					}, 1000);
 	            	
-	            	
 				},
 	            error : function(){
 	                alert("통신실패!!!!");
@@ -239,27 +270,30 @@
 			    // 마커를 생성합니다
 			    var marker = new kakao.maps.Marker({
 			        map: map, // 마커를 표시할 지도
-			        position: positions[i].latlng // 마커의 위치
+			        position: positions[i].latlng, // 마커의 위치
 			    });
 				
 			    markers.push(marker);
 			    // 마커에 표시할 인포윈도우를 생성합니다 
-			    var infowindow = new kakao.maps.InfoWindow({
-			        content: positions[i].content // 인포윈도우에 표시할 내용
+			    var infowindow = new kakao.maps.CustomOverlay({
+			        map: map, // 마커를 표시할 지도
+			        position: positions[i].latlng, // 마커의 위치
+			        content: positions[i].content, // 인포윈도우에 표시할 내용
 			    });
-
+			    
+			    // 화면 불러올 때 인포윈도우 안보이게 설정
+			    infowindow.setMap(null);
 			    // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
 			    // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
 			    (function(marker, infowindow) {
-			        // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다 
-			        kakao.maps.event.addListener(marker, 'mouseover', function() {
-			            infowindow.open(map, marker);
+			        kakao.maps.event.addListener(marker, 'click', function() {
+			            // infowindow.open(map, marker);
+			            infowindow.setMap(map);
+			        });
+			        kakao.maps.event.addListener(map, 'click', function() {
+			        	infowindow.setMap(null);
 			        });
 
-			        // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-			        kakao.maps.event.addListener(marker, 'mouseout', function() {
-			            infowindow.close();
-			        });
 			    })(marker, infowindow);
 			}
 		}

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@page import="com.project.vo.UserVO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,11 +12,25 @@
 	
 </head>
 <body id="index">
+
+	<jsp:useBean id="user" class="com.project.vo.UserVO" scope="page"/> 
 	<!-- loading https://icons8.com/preloaders/ -->
 	<div class="wrap-loading display-none"><img src="${pageContext.request.contextPath}/img/loading3.gif" /></div> 
 	<div class="header">
 		<div class="login-box">
-			<a href="#">로그인</a>
+			<%
+				UserVO userVO = (UserVO) session.getAttribute("userVO");
+				if(userVO == null) {
+			%>
+				<a href="Login.jsp" class="no-login">로그인</a>
+			<% } else { %>
+				<jsp:setProperty name="user" property="name"  value="<%= userVO.getName() %>"/>
+				<div class="login">
+					<span><jsp:getProperty name="user" property="name" />님 환영합니다!!</span> <br>
+					<a href="#" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
+					<a href="api/LogoutAction.jsp">로그아웃</a>
+				</div> 
+			<% } %>
 		</div>
 		<div class="search-box">
 			<input type="text" name="search" id="search" placeholder="search...">
