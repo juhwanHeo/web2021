@@ -52,6 +52,7 @@
 		
 		while (rs.next()) {
 			stationVO = new StationVO();
+			stationVO.setStation_id(rs.getString("station_id"));
 			stationVO.setCharge_name(rs.getString("charge_name"));
 			stationVO.setAddress(rs.getString("address"));
 			stationVO.setCido(rs.getString("cido"));

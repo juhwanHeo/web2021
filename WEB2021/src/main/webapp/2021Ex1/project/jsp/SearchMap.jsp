@@ -26,7 +26,7 @@
 			<% } else { %>
 				<jsp:setProperty name="user" property="name"  value="<%= userVO.getName() %>"/>
 				<span><jsp:getProperty name="user" property="name" />님 환영합니다!!</span> <br>
-				<a href="#" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
+				<a href="StationAddForm.jsp" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
 				<a href="api/LogoutAction.jsp">로그아웃</a>
 			<% } %>
 		</div>
@@ -178,10 +178,12 @@
 	            dataType : "json",
 	            success : function(data){
 		        	console.log("positions.length: " + positions.length); 
+	            	closeOverlay();
 					if(positions.length != 0) 
 	            		removeMarker();
 					$.each(data, function(i, item) {
 	                	//console.log(i + ": " + JSON.stringify(item));
+	                	var user = '<jsp:getProperty name="user" property="name" />';
 	                	var addr = !!item.road_address ? item.road_address : item.num_address;
 	                	var available_time = item.available_st_time + ' ~ ' + item.available_ed_time;
 	                	var slow_charge_cnt = item.slow_charge_cnt ;
@@ -189,28 +191,58 @@
 	                	var charge_type = !!item.quick_charge_type ? item.quick_charge_type.replaceAll('+', ',') : "정보 없음";
 	                	var tel = !!item.tel ? item.tel : "정보 없음";
 	                	var parking_fee_yn = item.parking_fee_yn === 'Y' ?  ' O ': ' X ';
-	                	var content = '<div class="wrap">' + 
-						            '    <div class="info">' + 
-						            '        <div class="title">' + 
-						            				item.charge_name+ 
-						            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
-						            '        </div>' + 
-						            '        <div class="body">' + 
-						            '            <div class="img">' + 
-						            '                <img src="${pageContext.request.contextPath}/img/eco-friendly.png" width="101" height="100">' +
-						            '           </div>' + 
-						            '            <div class="desc">' + 
-						            '                <div class="ellipsis"> <i class="fa fa-map-marker"></i> ' + addr + ' </div>' + 
-						            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 완속 충전기 수 : ' + slow_charge_cnt +' </div>' +  
-						            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 고속 충전기 수 : ' + quick_charge_cnt +' </div>' +
-						            '                <div class="jibun ellipsis"> <i class="fa fa-bolt"></i> 충전기 타입 : ' + charge_type + '</div>' +  
-						            '                <div class="jibun ellipsis"> <i class="fa fa-clock-o"></i> : ' + available_time + '</div>' +  
-						            '                <div class="jibun ellipsis"> <i class="fa fa fa-phone"></i> : ' + tel + '</div>' + 
-						            '                <div class="jibun ellipsis"> <i class="fa fa-credit-card"></i> 주차비 : ' + parking_fee_yn + '</div>' +
-						            '            </div>' + 
-						            '        </div>' + 
-						            '    </div>' +    
-						            '</div>';
+	                	var content;
+	                	// user = user ==='null' ? null : user;
+	                	if(user === 'null') {
+	                		content = '<div class="wrap">' + 
+				            '    <div class="info">' + 
+				            '        <div class="title">' + 
+				            				item.charge_name +  
+				            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+				            '        </div>' + 
+				            '        <div class="body">' + 
+				            '            <div class="img">' + 
+				            '                <img src="${pageContext.request.contextPath}/img/eco-friendly.png" width="101" height="100">' +
+				            '           </div>' + 
+				            '            <div class="desc">' + 
+				            '                <div class="ellipsis"> <i class="fa fa-map-marker"></i> ' + addr + ' </div>' + 
+				            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 완속 충전기 수 : ' + slow_charge_cnt +' </div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 고속 충전기 수 : ' + quick_charge_cnt +' </div>' +
+				            '                <div class="jibun ellipsis"> <i class="fa fa-bolt"></i> 충전기 타입 : ' + charge_type + '</div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa-clock-o"></i> : ' + available_time + '</div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa fa-phone"></i> : ' + tel + '</div>' + 
+				            '                <div class="jibun ellipsis"> <i class="fa fa-credit-card"></i> 주차비 : ' + parking_fee_yn + '</div>' +
+				            '            </div>' + 
+				            '        </div>' + 
+				            '    </div>' +    
+				            '</div>';
+	                	}
+	                	else {
+	                		content = '<div class="wrap">' + 
+				            '    <div class="info">' + 
+				            '        <div class="title">' + 
+				            				item.charge_name +  
+				            '            <div class="delete" onclick="deletePostion(' + item.station_id + ', \''+ item.charge_name + '\')" title="삭제"><i class="fa fa-trash-o"></i></div>' +
+				            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+				            '        </div>' + 
+				            '        <div class="body">' + 
+				            '            <div class="img">' + 
+				            '                <img src="${pageContext.request.contextPath}/img/eco-friendly.png" width="101" height="100">' +
+				            '           </div>' + 
+				            '            <div class="desc">' + 
+				            '                <div class="ellipsis"> <i class="fa fa-map-marker"></i> ' + addr + ' </div>' + 
+				            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 완속 충전기 수 : ' + slow_charge_cnt +' </div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa-car"></i> 고속 충전기 수 : ' + quick_charge_cnt +' </div>' +
+				            '                <div class="jibun ellipsis"> <i class="fa fa-bolt"></i> 충전기 타입 : ' + charge_type + '</div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa-clock-o"></i> : ' + available_time + '</div>' +  
+				            '                <div class="jibun ellipsis"> <i class="fa fa fa-phone"></i> : ' + tel + '</div>' + 
+				            '                <div class="jibun ellipsis"> <i class="fa fa-credit-card"></i> 주차비 : ' + parking_fee_yn + '</div>' +
+				            '            </div>' + 
+				            '        </div>' + 
+				            '    </div>' +    
+				            '</div>';
+	                	}
+	                	
 	                	positions.push({
 	                		text: item.charge_name,
 	                		content: content,
@@ -257,6 +289,8 @@
 	             
 	        });
 		}
+		
+		
 		function removeMarker() {
 		    for ( var i = 0; i < markers.length; i++ ) {
 		    	markers[i].setMap(null);
@@ -264,6 +298,8 @@
 		    markers = [];
 		    positions = [];
 		}
+		
+		var infowindow_list = [];
 		function addMarker() {
 			// 마커
 			for (var i = 0; i < positions.length; i ++) {
@@ -275,12 +311,13 @@
 				
 			    markers.push(marker);
 			    // 마커에 표시할 인포윈도우를 생성합니다 
-			    var infowindow = new kakao.maps.CustomOverlay({
+			    infowindow = new kakao.maps.CustomOverlay({
 			        map: map, // 마커를 표시할 지도
 			        position: positions[i].latlng, // 마커의 위치
 			        content: positions[i].content, // 인포윈도우에 표시할 내용
 			    });
 			    
+			    infowindow_list.push(infowindow);
 			    // 화면 불러올 때 인포윈도우 안보이게 설정
 			    infowindow.setMap(null);
 			    // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
@@ -289,9 +326,6 @@
 			        kakao.maps.event.addListener(marker, 'click', function() {
 			            // infowindow.open(map, marker);
 			            infowindow.setMap(map);
-			        });
-			        kakao.maps.event.addListener(map, 'click', function() {
-			        	infowindow.setMap(null);
 			        });
 
 			    })(marker, infowindow);
@@ -309,6 +343,30 @@
 		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
 		    map.panTo(moveLatLon);
 		    
+		}
+		
+		function closeOverlay() {
+			$.each(infowindow_list, function(i, item) {
+				item.setMap(null);
+			})
+		}
+		
+		function deletePostion(station_id, station_nm) {
+			if(confirm(station_nm + '을(를) 삭제 하시겠습니까?')) {
+				$.ajax({
+		            type : "GET",
+					data : { station_id },
+		            url : "api/StationDelete.jsp",
+		            dataType : "json",
+		            success : function(data){
+		            	closeOverlay();
+		            	getCharge();
+		            },
+		            error : function(){
+		                alert("통신실패!!!!");
+		            }
+		        });
+			}
 		}
 		
 	</script>
