@@ -3,6 +3,7 @@ package com.project.vo;
 import java.sql.Date;
 
 public class StationVO {
+	private String station_id;
 	private String charge_name;
 	private String address;
 	private String cido;
@@ -22,6 +23,14 @@ public class StationVO {
 	private String latitude;
 	private String longitude;
 	private Date data_dt;
+
+	public String getStation_id() {
+		return station_id;
+	}
+
+	public void setStation_id(String station_id) {
+		this.station_id = station_id;
+	}
 
 	public String getCharge_name() {
 		return charge_name;
@@ -99,8 +108,8 @@ public class StationVO {
 		return slow_charge_cnt;
 	}
 
-	public void setSlow_charge_cnt(int slow_charhe_cnt) {
-		this.slow_charge_cnt = slow_charhe_cnt;
+	public void setSlow_charge_cnt(int slow_charge_cnt) {
+		this.slow_charge_cnt = slow_charge_cnt;
 	}
 
 	public int getQuick_charge_cnt() {

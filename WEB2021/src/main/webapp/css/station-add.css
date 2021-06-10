@@ -1,0 +1,80 @@
+* {
+	margin: 0 auto;
+	text-decoration: none;
+	font-family: sans-serif;
+}
+
+body {
+	background: #3746AF;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+.stationForm {
+	width: 65%;
+	height: 10%; 
+	margin-top: 30px;
+	margin-bottom: 100px;
+	background-color: #FFFFFF;
+	border-radius: 15px; 
+} 
+
+.stationForm h2 {
+	text-align: center;
+	margin: 30px;
+}
+
+.textForm {
+	border-bottom: 2px solid #adadad;
+	margin: 30px;
+	padding: 10px 10px;
+}
+
+label {
+	text-align: left;
+}
+ 
+.input_text {
+	width: 100%;
+	border: none;
+	outline: none; 
+	color: #636e72;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+.bottom {
+	text-align: center;
+}
+
+.btn {
+	
+	position: relative;
+	margin-bottom: 40px;
+	width: 80%;
+	height: 40px;
+	background: #3746AF;
+	background-position: left;
+	background-size: 200%;
+	color: white;
+	font-weight: bold;
+	border: none;
+	cursor: pointer;
+	display: inline;
+}
+
+.btn:hover {
+	background-position: right;
+}
+
+.bottomText {
+	text-align: center;
+}

@@ -41,6 +41,15 @@
 	font-weight: bold;
 }
 
+.info .delete {
+	position: absolute;
+	top: 4px;
+	right: 40px;
+	color: #888;
+	width: 17px;
+	height: 17px;
+}
+
 .info .close {
 	position: absolute;
 	top: 10px;

@@ -27,7 +27,7 @@
 				<jsp:setProperty name="user" property="name"  value="<%= userVO.getName() %>"/>
 				<div class="login">
 					<span><jsp:getProperty name="user" property="name" />님 환영합니다!!</span> <br>
-					<a href="#" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
+					<a href="StationAddForm.jsp" style="border-right: 2px solid black; padding-right:4px;">관리자 페이지</a>  
 					<a href="api/LogoutAction.jsp">로그아웃</a>
 				</div> 
 			<% } %>
