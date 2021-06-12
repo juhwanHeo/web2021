@@ -34,7 +34,7 @@
 		</div>
 		<div class="search-box">
 			<input type="text" name="search" id="search" placeholder="search...">
-			<button class="icon" onclick=""><i class="fa fa-search"></i></button>
+			<button class="icon" onclick="searchStation();"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
 	<div class="main-container">
@@ -43,11 +43,12 @@
 		        <div class="card card-all">
 		            <div class="card-info">
 		                <span class="card-category">전기차</span>
-		                <h3 class="card-title">전체 </h3>
+		                <h3 class="card-title">전체 </h3> 
 		                <hr>
 		                <span class="card-title card-title-all">로딩중</span>
 		            </div>
 		        </div>
+		        
 		        <div class="card card-local">
 		            <div class="card-info">
 		                <span class="card-category">전기차</span>
@@ -62,24 +63,26 @@
 		<hr>
 		<div>
 		
-		
 		</div>
 	</div>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28&libraries=services"></script>
 	<script>
+	
+	function searchStation() {
+		var search = $("#search").val();
+		//search = !!search ? search : 'all'  
+    	window.location = "SearchMap.jsp?addr=" + search;
+	}
+	
 	var geocoder = new kakao.maps.services.Geocoder();
 	function success(pos) {
 		var crd = pos.coords;
-		console.log('위도 : ' + crd.latitude);
-		console.log('경도 : ' + crd.longitude);
 		lat = crd.latitude;
 		lon = crd.longitude;
 		getLocation(lat, lon, function (result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				var addr = result[0].address.region_2depth_name
-	        	console.log('result[0].road_address: ' + result[0].road_address);
-	        	console.log('result[0].road_address: ' + result[0].address.address_name);
-	        	console.log('result[0]: ' + JSON.stringify(result[0]));
+				addr = !!addr ? addr : '';
 	        	window.location = "SearchMap.jsp?addr=" + addr;
 			}   
 		});
@@ -98,7 +101,7 @@
 	})
 	
 	$(".card-all").click(function() {
-    	window.location = "SearchMap.jsp?addr=all";
+    	window.location = "SearchMap.jsp?addr=";
 	})
 	
 	function getCnt(search) {
@@ -146,6 +149,10 @@
 			},
             error : function(){
                 alert("통신실패!!!!");
+                if(!search) {
+	        		$('.card-title-local-name').html('정보 없음 지역');
+	        		$('.card-title-local-cnt').html('정보 없음 개 등록');
+                }
 				$('.wrap-loading').addClass('display-none');
             }
              
@@ -165,16 +172,17 @@
 		};
 
 		function error(err) {
-			console.warn('ERROR(' + err.code + '): ' + err.message);
+			console.log('ERROR(' + err.code + '): ' + err.message);
 		};
 		
 		function getLocation(lat, lon, callback) {
 			geocoder.coord2Address(lon, lat, callback);
 		}
 		navigator.geolocation.getCurrentPosition(success, error);
-		
 		getCnt('');
+		
 	});
+	
 	</script>
 </body>
 </html>

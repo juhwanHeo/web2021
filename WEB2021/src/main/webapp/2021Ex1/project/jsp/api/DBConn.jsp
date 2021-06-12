@@ -5,7 +5,7 @@
 <%
 	Connection conn = null;
 	
-	String url = "jdbc:mysql://localhost:3306/WEB2021";
+	String url = "jdbc:mysql://localhost:3306/web2021";
 	String user = "root";
 	String password = "1234";
 	

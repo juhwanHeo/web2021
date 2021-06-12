@@ -62,6 +62,11 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28&libraries=LIBRARY"></script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=51514afad23b808dd3f78f3965d57b28&libraries=services,clusterer,drawing"></script>
 	<script>
+		$(document).ready(function() {
+			var addr = '<%= request.getParameter("addr") %>'
+			if(addr) getCharge(addr);
+			else getCharge();
+		})
 		/* 
 			참고 
 			https://apis.map.kakao.com/web/sample/geolocationMarker/
@@ -143,9 +148,6 @@
 			getCharge(search, type);
 		}
 		
-		var addr = '<%= request.getParameter("addr") %>'
-		if(addr) getCharge(addr);
-		
 		var positions = [];
 		var markers = [];
 		var options = {
@@ -154,6 +156,22 @@
 			};
 		var container = document.getElementById('map');
 		var map = new kakao.maps.Map(container, options);
+		
+		
+		var lat;
+		var lon;
+		function success(pos) {
+			var crd = pos.coords;
+			lat = crd.latitude;
+			lon = crd.longitude;
+			
+		};
+
+		function error(err) {
+			console.warn('ERROR(' + err.code + '): ' + err.message);
+		};
+
+    	navigator.geolocation.getCurrentPosition(success, error);
 		
 		function getCharge(address, type) {
 			var search;
@@ -167,8 +185,8 @@
 				$('input:checkbox[name="cb_dc_combo"]').prop("checked", false);
 				$('input:checkbox[name="cb_triple"]').prop("checked", false);
 			}
-			if(search === 'all') search = '';
-
+			//if(!!search === 'all') search = '';
+			search = !!search ? search : '';
 			console.log('search: ' + search);
 			console.log('type: ' + type);
 			$.ajax({
@@ -191,13 +209,14 @@
 	                	var charge_type = !!item.quick_charge_type ? item.quick_charge_type.replaceAll('+', ',') : "정보 없음";
 	                	var tel = !!item.tel ? item.tel : "정보 없음";
 	                	var parking_fee_yn = item.parking_fee_yn === 'Y' ?  ' O ': ' X ';
+	                	var distance = getDistanceKm(lat, lon, item.latitude, item.longitude);
+	                	var distance_content = !!distance ? '<span class="distance">( ' + distance.toFixed(2) + 'km )</span>' : ''; 
 	                	var content;
-	                	// user = user ==='null' ? null : user;
 	                	if(user === 'null') {
 	                		content = '<div class="wrap">' + 
 				            '    <div class="info">' + 
 				            '        <div class="title">' + 
-				            				item.charge_name +  
+				            				item.charge_name + distance_content +
 				            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
 				            '        </div>' + 
 				            '        <div class="body">' + 
@@ -221,7 +240,7 @@
 	                		content = '<div class="wrap">' + 
 				            '    <div class="info">' + 
 				            '        <div class="title">' + 
-				            				item.charge_name +  
+            								item.charge_name + distance_content +
 				            '            <div class="delete" onclick="deletePostion(' + item.station_id + ', \''+ item.charge_name + '\')" title="삭제"><i class="fa fa-trash-o"></i></div>' +
 				            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
 				            '        </div>' + 
@@ -369,6 +388,19 @@
 			}
 		}
 		
+		function getDistanceKm(lat1, lng1, lat2, lng2) { 
+			function deg2rad(deg) { 
+				return deg * (Math.PI/180) 
+			} 
+			var R = 6371; // Radius of the earth in km 
+			var dLat = deg2rad(lat2-lat1); // deg2rad below 
+			var dLon = deg2rad(lng2-lng1); 
+			var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c; // Distance in km
+			return d; 
+		}
+ 
 	</script>
 </body>
 </html>

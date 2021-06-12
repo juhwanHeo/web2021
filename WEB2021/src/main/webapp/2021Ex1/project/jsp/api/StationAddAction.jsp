@@ -71,7 +71,7 @@
 		pstmt.executeUpdate();
 		UserVO userVO = new UserVO();
 
-		out.println("<script>alert('추가 완료'); history.back();</script>");
+		out.println("<script>alert('추가 완료'); window.location = '/WEB2021/2021Ex1/project/jsp/StationAddForm.jsp';</script>");
 		/* if(userVO.getId() != null) {
 			session.setAttribute("userVO", userVO);
 			response.sendRedirect("/WEB2021/2021Ex1/project/jsp/index.jsp");

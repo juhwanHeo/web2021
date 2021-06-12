@@ -41,6 +41,15 @@
 	font-weight: bold;
 }
 
+.info .distance {
+	padding: 0 0 0 3px; 
+	height: 30px; 
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	font-size: 14px;
+	font-weight: bold;
+}
+
 .info .delete {
 	position: absolute;
 	top: 4px;
