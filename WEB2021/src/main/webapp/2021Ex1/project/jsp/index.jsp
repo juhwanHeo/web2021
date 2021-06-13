@@ -89,7 +89,7 @@
 	};
 
 	function error(err) {
-		console.warn('ERROR(' + err.code + '): ' + err.message);
+		console.log('ERROR(' + err.code + '): ' + err.message);
 	};
 	
 	function getLocation(lat, lon, callback) {
@@ -113,13 +113,16 @@
             success : function(data){
             	setTimeout(function() {
 		        	console.log("data: " + JSON.stringify(data)); 
-		        	if(!search) {
-		        		$('.card-title-all').html('총 ' + data.cnt + '개 등록');
-		        	}
-		        	else {
+	        		$('.card-title-all').html('총 ' + data.all_cnt + '개 등록');
+	        		if(data.local_cnt > 0) {
 		        		$('.card-title-local-name').html(search + ' 지역');
-		        		$('.card-title-local-cnt').html('총 ' + data.cnt + '개 등록');
-		        	}
+		        		$('.card-title-local-cnt').html('총 ' + data.local_cnt + '개 등록');
+	        		}
+	        		else {
+		        		$('.card-title-local-name').html('정보 없음');
+		        		$('.card-title-local-cnt').html('');
+	        		}
+	        		
             	}, 1000);
             },
 			beforeSend : function() {
@@ -149,10 +152,6 @@
 			},
             error : function(){
                 alert("통신실패!!!!");
-                if(!search) {
-	        		$('.card-title-local-name').html('정보 없음 지역');
-	        		$('.card-title-local-cnt').html('정보 없음 개 등록');
-                }
 				$('.wrap-loading').addClass('display-none');
             }
              
@@ -167,19 +166,22 @@
 				if (status === kakao.maps.services.Status.OK) {
 					var addr = result[0].address.region_2depth_name
 		        	getCnt(addr);
-				}   
+				} 
+				else {
+				}
+				
 			});
 		};
 
 		function error(err) {
 			console.log('ERROR(' + err.code + '): ' + err.message);
+			getCnt();
 		};
 		
 		function getLocation(lat, lon, callback) {
 			geocoder.coord2Address(lon, lat, callback);
 		}
 		navigator.geolocation.getCurrentPosition(success, error);
-		getCnt('');
 		
 	});
 	
