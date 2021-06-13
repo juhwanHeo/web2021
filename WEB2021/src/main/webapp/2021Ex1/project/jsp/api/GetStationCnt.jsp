@@ -15,20 +15,23 @@
 	ResultSet rs = null;
 	Statement stmt = null;
 	try {
-		String sql = "SELECT count(*) as cnt FROM station WHERE address LIKE '%" + search + "%'" 
-					+ "OR charge_name LIKE '%" + search + "%'" 
-					+ "OR cido LIKE '%" + search + "%'" 
-					+ "OR road_address LIKE '%" + search + "%'"
-					+ "OR num_address LIKE '%" + search + "%'" ;
-		
+		String sql = "SELECT count(*) as all_cnt "
+					+ ",count(case when cido like '%" + search + "%' "
+					+ "or road_address like '%" + search + "%' "
+					+ "or num_address like '%" + search + "%' then 1 end) as local_cnt "
+					+ "FROM station ";
+		System.out.println("sql : " + sql);
 		stmt = conn.createStatement();
 		rs = stmt.executeQuery(sql);
 		Map<String, Object> map = new HashMap<>();
-		int cnt = 0;
+		int all_cnt = 0;
+		int local_cnt = 0;
 		while (rs.next()) {
-			cnt = rs.getInt("cnt");
+			all_cnt = rs.getInt("all_cnt");
+			local_cnt = rs.getInt("local_cnt");
 		}
-		map.put("cnt", cnt);
+		map.put("all_cnt", all_cnt);
+		map.put("local_cnt", local_cnt);
 		JSONObject jsonObj = new JSONObject(map);
 		String json = jsonObj.toJSONString();
 		out.println(json);  
